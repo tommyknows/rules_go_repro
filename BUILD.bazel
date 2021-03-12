@@ -1,0 +1,27 @@
+load("@bazel_gazelle//:def.bzl", "gazelle")
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+load("//build:template.bzl", "template")
+
+# gazelle:prefix github.com/tommyknows/repro
+gazelle(name = "gazelle")
+
+template(
+    name = "hello",
+    template = ":hello.go.tpl",
+    destination_name= "hello.go",
+)
+
+go_library(
+    name = "go_default_library",
+    srcs = [":hello"],
+    importpath = "github.com/tommyknown/repro",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "mybin",
+    embed = [":go_default_library"],
+    goos = "linux",
+    goarch = "amd64",
+    visibility = ["//visibility:public"],
+)

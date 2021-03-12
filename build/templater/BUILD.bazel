@@ -1,0 +1,21 @@
+load("@io_bazel_rules_go//go:def.bzl", "go_binary", "go_library")
+
+go_library(
+    name = "go_default_library",
+    srcs = ["template.go"],
+    importpath = "github.com/tommyknown/repro/build/templater",
+    visibility = ["//visibility:private"],
+)
+
+go_binary(
+    name = "templater",
+    embed = [":templater_lib"],
+    visibility = ["//visibility:public"],
+)
+
+go_library(
+    name = "templater_lib",
+    srcs = ["templater.go"],
+    importpath = "github.com/tommyknows/repro/build/templater",
+    visibility = ["//visibility:private"],
+)
